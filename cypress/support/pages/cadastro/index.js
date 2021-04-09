@@ -2,6 +2,8 @@ const faker = require('faker')
 
 const el = require('./elements').ELEMENTS
 
+import Routes from '../../routes'
+
 class Cadastro {
 
     acessarFormularioDeCadastro() {
@@ -14,6 +16,17 @@ class Cadastro {
     }
     submeterCadastro(){
         cy.get(el.buttonSubmit).click();
+    }
+    verificarSeOCadastroFoiCriadoComSucesso() {
+        cy.wait(`@${Routes.as.postUsers}`).then((postUsersResponse) => {
+            expect(postUsersResponse.response.statusCode).to.eq(200)
+        })
+        cy.wait(`@${Routes.as.getTags}`).then((getTagsResponse) => {
+            expect(getTagsResponse.response.statusCode).to.eq(200)
+        })
+        cy.wait(`@${Routes.as.getFeed}`).then((getFeedResponse) => {
+            expect(getFeedResponse.response.statusCode).to.eq(200)
+        })
     }
     
     
